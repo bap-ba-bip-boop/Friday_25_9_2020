@@ -16,14 +16,15 @@ export default class Panel extends React.Component{
         }
     }
     encryptMessage(message){
-        const encryptedCharacter = (letter, mapNum, shift) => {
-            return String.fromCharCode((((letter.charCodeAt(0) - mapNum + shift) % 26) + mapNum));
+        let encryptedMessage = "", tempShift = (this.state.shift < 0) ? 26 + this.state.shift : this.state.shift;
+        const encryptedCharacter = (letter, mapNum) => {
+            return String.fromCharCode((((letter.charCodeAt(0) - mapNum + tempShift) % 26) + mapNum));
         };
-        let encryptedMessage = "", tempShift = (this.state.shift < 0) ? 26 - this.state.shift : this.state.shift;
 
-        for(let letter of message)
+        for(let letter of message){
+            console.log(tempShift)
             encryptedMessage += (/[A-Z]/.test(letter)) ? encryptedCharacter(letter, 65, tempShift) : (/[a-z]/.test(letter)) ? encryptedCharacter(letter, 97, tempShift) : letter;
-
+        }
         this.setState( () => this.state.messageTemp = encryptedMessage);
     }
     handleIncrement(){
