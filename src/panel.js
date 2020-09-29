@@ -16,21 +16,20 @@ export default class Panel extends React.Component{
         }
     }
     encryptMessage(message){
-        const encryptedCharacter = (letter, mapNum, shift) => {
-            return String.fromCharCode((((letter.charCodeAt(0) - mapNum + shift) % 26) + mapNum));
+        let encryptedMessage = "";
+        const encryptedCharacter = (letter, mapNum) => {
+            return String.fromCharCode((((letter.charCodeAt(0) - mapNum + this.state.shift) % 26) + mapNum));
         };
-        let encryptedMessage = "", tempShift = (this.state.shift < 0) ? 26 - this.state.shift : this.state.shift;
 
         for(let letter of message)
-            encryptedMessage += (/[A-Z]/.test(letter)) ? encryptedCharacter(letter, 65, tempShift) : (/[a-z]/.test(letter)) ? encryptedCharacter(letter, 97, tempShift) : letter;
-
+            encryptedMessage += (/[A-Z]/.test(letter)) ? encryptedCharacter(letter, 65) : (/[a-z]/.test(letter)) ? encryptedCharacter(letter, 97) : letter;
         this.setState( () => this.state.messageTemp = encryptedMessage);
     }
     handleIncrement(){
-        this.setState( prevState => ({shift: prevState.shift + 1 }));
+        this.setState( prevState => ({shift: (prevState.shift == 25) ? 0 : prevState.shift + 1 }));
     }
     handleDecrement(){
-        this.setState( prevState => ({shift: prevState.shift - 1 }));
+        this.setState( prevState => ({shift: (prevState.shift == 0) ? 25 : prevState.shift - 1 }));
     }
     handleReset(){
         this.setState({shift: 0 });
